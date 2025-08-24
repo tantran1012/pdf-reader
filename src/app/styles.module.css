@@ -1,0 +1,323 @@
+/* Base container styles */
+.container {
+  width: 100%;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* PDF Viewer layout */
+.pdfViewer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.contentContainer {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 56px);
+}
+
+/* Toolbar styles */
+.toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  height: 56px;
+}
+
+.toolbarSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toolbarSection > *:not(:last-child) {
+  margin-right: 8px;
+}
+
+.toolbarRight {
+  justify-content: flex-end;
+}
+
+.toolbarButton {
+  padding: 8px;
+  background-color: transparent;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  transition: all 0.2s ease;
+}
+
+.toolbarButton:hover {
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.toolbarButton.active {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+/* Zoom controls */
+.zoomControls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.zoomControls .toolbarButton {
+  border: none;
+}
+
+.zoomLevel {
+  padding: 0 8px;
+  color: #666;
+  font-size: 14px;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* File input styles */
+.fileInput {
+  display: none;
+}
+
+.fileInputLabel {
+  cursor: pointer;
+}
+
+.fileInputButton {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.fileInputButton:hover {
+  background-color: #1d4ed8;
+}
+
+.fileName {
+  max-width: 500px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Document container styles */
+.documentContainer {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  height: calc(100vh - 56px);
+  background: #f0f0f0;
+  cursor: grab;
+  user-select: none;
+  scrollbar-width: auto;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.documentContainer.grabbing {
+  cursor: grabbing !important;
+}
+
+/* Document and page styles - Fixed */
+.document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  min-width: fit-content;
+  width: fit-content;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.pageContainer {
+  position: relative;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  clear: both;
+}
+
+.pageContainer:last-child {
+  margin-bottom: 0;
+}
+
+.page {
+  display: block;
+  margin: 0 auto 20px auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  background: white;
+  transition: opacity 0.3s ease;
+  height: auto;
+  width: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.pageNumber {
+  display: block;
+  text-align: center;
+  padding: 8px;
+  margin-bottom: 10px;
+  color: #666;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 4px;
+  position: relative; /* Thay đổi từ sticky */
+  z-index: 2;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pagePlaceholder {
+  height: 600px;
+  width: 420px; /* Kích thước A4 tỷ lệ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  color: #666;
+  font-size: 14px;
+  margin: 0 auto;
+}
+
+.pageLoading {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  display: block;
+  width: 100%;
+}
+
+/* Bookmarks styles */
+.bookmarksContainer {
+  width: 250px;
+  min-width: 250px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #fff;
+  border-right: 1px solid #ddd;
+  transition: width 0.3s ease;
+  padding: 20px;
+}
+
+.bookmarks {
+  width: 100%;
+}
+
+.bookmarksTitle {
+  margin-bottom: 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.bookmarksList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bookmarkItem {
+  margin: 8px 0;
+}
+
+.bookmarkButton {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.bookmarkButton:hover {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+}
+
+.nestedBookmarks {
+  list-style: none;
+  padding-left: 20px;
+  margin: 4px 0;
+}
+
+/* Custom scrollbar styles */
+.documentContainer::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.documentContainer::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.documentContainer::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+  border: 3px solid #f1f1f1;
+}
+
+.documentContainer::-webkit-scrollbar-thumb:hover {
+  background-color: #666;
+}
+
+.documentContainer::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+}
+
+/* Fullscreen styles */
+:fullscreen .pdfViewer {
+  background-color: #f5f5f5;
+}
+
+/* Drop zone styles */
+.dropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 20px;
+}
+
+.title {
+  font-size: 2rem;
+  color: #333;
+  margin: 0;
+}
