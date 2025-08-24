@@ -2,6 +2,9 @@
 
 Một ứng dụng đọc file PDF cho máy yếu được xây dựng bằng [Next.js](https://nextjs.org/) 
 
+# 🎠 Demo 
+ [PDF reader](https://pdf-reader-murex.vercel.app/)
+ 
 ## 🚀 Tính năng chính
 
 - Hiển thị file PDF trực tiếp trên trình duyệt cho máy yếu
