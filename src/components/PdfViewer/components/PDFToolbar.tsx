@@ -5,6 +5,9 @@ interface PDFToolbarProps {
   showBookmarks: boolean;
   scale: number;
   isFullScreen: boolean;
+  isToolbarHidden: boolean;
+  viewMode: "default" | "drag" | "select";
+  onToggleViewMode: () => void;
   onToggleBookmarks: () => void;
   onFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onZoom: (type: "in" | "out" | "reset") => void;
@@ -12,18 +15,21 @@ interface PDFToolbarProps {
   styles: any;
 }
 
-export const PDFToolbar: React.FC<PDFToolbarProps> = ({
+export const PDFToolbar = ({
   fileName,
   showBookmarks,
   scale,
   isFullScreen,
+  isToolbarHidden,
   onToggleBookmarks,
   onFileChange,
   onZoom,
   onToggleFullScreen,
   styles,
-}) => (
-  <div className={styles.toolbar}>
+  viewMode,
+  onToggleViewMode,
+}: PDFToolbarProps) => (
+  <div className={`${styles.toolbar} ${isToolbarHidden ? styles.hidden : ""}`}>
     <div className={styles.toolbarSection}>
       <button
         onClick={onToggleBookmarks}
@@ -52,7 +58,19 @@ export const PDFToolbar: React.FC<PDFToolbarProps> = ({
         />
         <span className={styles.toolbarButton}>Chọn PDF</span>
       </label>
-
+      <button
+        onClick={onToggleViewMode}
+        className={`${styles.toolbarButton} ${styles.viewModeButton}`}
+        title={
+          viewMode === "default"
+            ? "Chế độ mặc định"
+            : viewMode === "drag"
+            ? "Chế độ kéo thả"
+            : "Chế độ chọn văn bản"
+        }
+      >
+        {viewMode === "default" ? "☝" : viewMode === "drag" ? "✋" : "✒"}
+      </button>
       <div className={styles.zoomControls}>
         <button
           onClick={() => onZoom("out")}

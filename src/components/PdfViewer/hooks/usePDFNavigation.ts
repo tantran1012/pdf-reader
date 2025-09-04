@@ -60,10 +60,12 @@ export const usePDFNavigation = (
         break;
       }
     }
-  }, [debouncedSetVisiblePages]);
+  }, [debouncedSetVisiblePages, containerRef]);
 
   useEffect(() => {
     if (!containerRef.current) return;
+
+    const container = containerRef.current;
 
     observerRef.current = new IntersectionObserver(
       (entries) => {
@@ -76,24 +78,24 @@ export const usePDFNavigation = (
         });
       },
       {
-        root: containerRef.current,
+        root: container,
         rootMargin: "100px 0px",
         threshold: 0.1,
       }
     );
 
-    const elements = containerRef.current.getElementsByClassName("pageContainer");
+    const elements = container.getElementsByClassName("pageContainer");
     Array.from(elements).forEach((element) => {
       observerRef.current?.observe(element);
     });
 
-    containerRef.current.addEventListener("scroll", handleScroll, { passive: true });
+    container.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       observerRef.current?.disconnect();
-      containerRef.current?.removeEventListener("scroll", handleScroll);
+      container.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll, debouncedSetVisiblePages]);
+  }, [handleScroll, debouncedSetVisiblePages, containerRef]);
 
   return {
     currentPage,

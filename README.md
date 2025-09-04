@@ -1,14 +1,19 @@
 # 📚 PDF Reader
 
-Một ứng dụng đọc file PDF cho máy yếu được xây dựng bằng [Next.js](https://nextjs.org/) 
+Một ứng dụng đọc file PDF cho máy yếu được xây dựng bằng [Next.js](https://nextjs.org/)
 
-# 🎠 Demo 
- [PDF reader](https://pdf-reader-murex.vercel.app/)
- 
+# 🎠 Demo
+
+[PDF reader](https://pdf-reader-murex.vercel.app/)
+
 ## 🚀 Tính năng chính
 
 - Hiển thị file PDF trực tiếp trên trình duyệt cho máy yếu
-- Xem bookmark có sẵn trên file 
+- Xem bookmark có sẵn trên file
+
+## 🎭 Nhược điểm
+
+- Thao tác nhảy đến trang bất kỳ sẽ chậm hơn.
 
 ## 🛠️ Công nghệ sử dụng
 
@@ -38,3 +43,10 @@ npm run dev
 pnpm dev
 # hoặc
 yarn dev
+```
+
+## 🐛 lỗi đã phát hiện (sẽ sửa sau)
+
+- Không Highlight bookmark trang hiện tại
+- Giật lag khi render trang bất kì ở xa
+- Chưa thao tác được liên kết trực tiếp trên trang pdf

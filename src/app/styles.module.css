@@ -11,13 +11,21 @@
   flex-direction: column;
   height: 100vh;
   background-color: #f5f5f5;
+  position: relative;
 }
 
 .contentContainer {
   display: flex;
   flex: 1;
   overflow: hidden;
-  height: calc(100vh - 56px);
+  height: 100vh; /* Change to full height */
+  position: relative;
+  padding-top: 56px; /* Add padding for toolbar */
+  transition: padding-top 0.3s ease;
+}
+
+.contentContainer.fullHeight {
+  padding-top: 0;
 }
 
 /* Toolbar styles */
@@ -29,6 +37,18 @@
   background-color: #fff;
   border-bottom: 1px solid #ddd;
   height: 56px;
+  transition: transform 0.3s ease, opacity 0.3s ease; /* Add opacity transition */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  opacity: 1;
+}
+
+.toolbar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
 }
 
 .toolbarSection {
@@ -132,19 +152,36 @@
   flex: 1;
   overflow: auto;
   position: relative;
-  height: calc(100vh - 56px);
   background: #f0f0f0;
-  cursor: grab;
-  user-select: none;
   scrollbar-width: auto;
   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  cursor: default;
+  user-select: text;
+  transition: cursor 0.2s ease;
 }
 
-.documentContainer.grabbing {
-  cursor: grabbing !important;
+/* Document container modes */
+
+.documentContainer[data-view-mode="default"] {
+  cursor: default;
+  user-select: text;
+}
+
+.documentContainer[data-view-mode="drag"] {
+  cursor: grab;
+  user-select: none;
+}
+
+.documentContainer[data-view-mode="drag"].grabbing {
+  cursor: grabbing;
+}
+
+.documentContainer[data-view-mode="select"] {
+  cursor: text;
+  user-select: text;
 }
 
 /* Document and page styles - Fixed */
@@ -181,8 +218,18 @@
   transition: opacity 0.3s ease;
   height: auto;
   width: auto;
+  user-select: text !important;
   position: relative;
   z-index: 1;
+}
+
+.page > div {
+  user-select: text !important;
+}
+
+.page ::selection {
+  background: #0073ff44;
+  color: inherit;
 }
 
 .pageNumber {
@@ -222,22 +269,63 @@
   width: 100%;
 }
 
+/* Text Layer styles - Add these */
+.textLayer {
+  position: absolute;
+  text-align: initial;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  line-height: 1;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.textLayer span {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  pointer-events: auto;
+  user-select: text !important;
+}
+
+.textLayer ::selection {
+  background: rgba(0, 0, 255, 0.2);
+}
+
 /* Bookmarks styles */
 .bookmarksContainer {
-  width: 250px;
-  min-width: 250px;
   height: 100%;
   overflow-y: auto;
   background-color: #fff;
   border-right: 1px solid #ddd;
-  transition: width 0.3s ease;
-  padding: 20px;
+  transition: all 0.3s ease;
+  transform: translateX(0);
+  width: 250px;
+  flex-shrink: 0;
+}
+
+.bookmarksContainer.hiding {
+  width: 0;
+  transform: translateX(-100%);
+  overflow: hidden;
 }
 
 .bookmarks {
   width: 100%;
 }
-
+.bookmarkRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .bookmarksTitle {
   margin-bottom: 16px;
   font-size: 1.2rem;
@@ -250,30 +338,81 @@
   margin: 0;
 }
 
+/* Bookmark items */
 .bookmarkItem {
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
 .bookmarkButton {
+  flex: 1;
+  text-align: left;
+  padding: 8px;
   background: none;
   border: none;
-  padding: 4px 8px;
   cursor: pointer;
-  text-align: left;
-  width: 100%;
+  color: #444;
   font-size: 0.9rem;
-  color: #333;
 }
-
+.bookmarkButton.active {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  font-weight: 600;
+  border-left: 3px solid #1976d2;
+  padding-left: 5px;
+}
 .bookmarkButton:hover {
-  background-color: #e0e0e0;
+  background-color: #f5f5f5;
   border-radius: 4px;
 }
-
+.bookmarkToggle {
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  transition: transform 0.2s ease;
+}
+.bookmarkToggle.expanded {
+  transform: rotate(90deg);
+}
 .nestedBookmarks {
   list-style: none;
-  padding-left: 20px;
-  margin: 4px 0;
+  padding-left: 24px;
+  margin: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  max-height: 1000px; /* Giá trị đủ lớn */
+}
+.nestedBookmarks.collapsed {
+  height: 0;
+}
+
+/* View mode toggle - Add these */
+.viewModeButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  color: #666;
+  font-size: 14px;
+}
+
+.viewModeButton:hover {
+  background-color: #f5f5f5;
+}
+
+.viewModeButton.active {
+  background-color: #e0e0e0;
+  color: #333;
 }
 
 /* Custom scrollbar styles */

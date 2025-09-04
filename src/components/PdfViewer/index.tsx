@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { Document, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
-
 import { PDFBookmarks } from "./components/PDFBookmarks";
 import { PDFPageRenderer } from "./components/PDFPageRenderer";
 import { PDFToolbar } from "./components/PDFToolbar";
@@ -38,8 +37,11 @@ export function PDFViewer({
   const {
     scale,
     isFullScreen,
+    isToolbarHidden,
     showBookmarks,
     pdfViewerRef,
+    viewMode,
+    toggleViewMode,
     handleZoom,
     toggleFullScreen,
     toggleBookmarks,
@@ -74,14 +76,21 @@ export function PDFViewer({
         showBookmarks={showBookmarks}
         scale={scale}
         isFullScreen={isFullScreen}
+        isToolbarHidden={isToolbarHidden}
         onToggleBookmarks={toggleBookmarks}
         onFileChange={onFileChange}
         onZoom={handleZoom}
         onToggleFullScreen={toggleFullScreen}
         styles={styles}
+        viewMode={viewMode}
+        onToggleViewMode={toggleViewMode}
       />
 
-      <div className={styles.contentContainer}>
+      <div
+        className={`${styles.contentContainer} ${
+          isToolbarHidden ? styles.fullHeight : ""
+        }`}
+      >
         {showBookmarks && (
           <PDFBookmarks
             bookmarks={bookmarks}
@@ -93,8 +102,13 @@ export function PDFViewer({
 
         <div
           ref={containerRef}
-          className={styles.documentContainer}
-          onMouseDown={handleMouseDown}
+          className={`${styles.documentContainer}`}
+          data-view-mode={viewMode}
+          onMouseDown={(e) => {
+            if (viewMode === "drag" || (viewMode === "default" && scale > 1)) {
+              handleMouseDown(e);
+            }
+          }}
           onMouseLeave={handleMouseUp}
         >
           <Document
